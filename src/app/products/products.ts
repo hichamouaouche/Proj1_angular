@@ -1,34 +1,33 @@
 import { Component, OnInit } from '@angular/core';
-import {NgForOf, NgIf} from '@angular/common';
+// On utilise ../ pour remonter d'un dossier
+import { ProductService } from '../services/product';
 
 @Component({
   selector: 'app-products',
-  imports: [], //Vide car @if et @for n'en ont pas besoin
-  //imports: [
-   //NgForOf,
-   // NgIf
-    //],
+  standalone: true,
+  imports: [],
   templateUrl: './products.html',
   styleUrl: './products.css',
 })
-export class Products implements OnInit{
+export class Products implements OnInit {
   products! : Array<any>;
-  constructor() {
-    }
-  ngOnInit():void {
-    this.products = [
-      {id : 1, name : "Computer", price : 2300, selected : true},
-      {id : 2, name : "Printer", price : 1200, selected : false},
-      {id : 3, name : "Smart Phone", price : 1100, selected : true}
-     ]
-    }
+
+  // On injecte bien ProductService
+  constructor(private productService: ProductService) {}
+
+  ngOnInit(): void {
+    this.getAllProducts();
+  }
+
+  getAllProducts(): void {
+    this.products = this.productService.getAllProducts();
+  }
 
   handleDelete(product: any): void {
-    let v = confirm ('etes vous sure de vouloir suprrimer? ');
-    if(v==true) {
-        this.products = this.products.filter((p: any) => p.id != product.id);
-        }
-      }
-
-
+    let v = confirm('Êtes-vous sûr de vouloir supprimer ?');
+    if (v === true) {
+      this.productService.deleteProduct(product);
+      this.getAllProducts();
+    }
   }
+}
