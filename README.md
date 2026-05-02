@@ -1,59 +1,127 @@
-# EnsetApp
+# Enset App
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.9.
+Application web Angular pour afficher et gerer une liste de produits.
 
-## Development server
+Le projet utilise Angular 21, Bootstrap 5 et Bootstrap Icons. L'ecran `Products`
+recupere les donnees depuis une API REST locale exposee sur
+`http://localhost:8883/products`.
 
-To start a local development server, run:
+## Fonctionnalites
 
-```bash
-ng serve
-```
+- Navigation entre les pages `Home` et `Products`.
+- Affichage des produits dans un tableau.
+- Affichage de l'etat `selected` avec des icones Bootstrap.
+- Suppression d'un produit apres confirmation utilisateur.
+- Communication HTTP avec un backend REST.
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+## Technologies
 
-## Code scaffolding
+- Angular `21.2.x`
+- TypeScript `5.9.x`
+- RxJS `7.8.x`
+- Bootstrap `5.3.x`
+- Bootstrap Icons `1.13.x`
+- Vitest pour les tests unitaires
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## Prerequis
 
-```bash
-ng generate component component-name
-```
+- Node.js installe
+- npm installe
+- Angular CLI, via `npx ng` ou installation globale
+- Backend produits lance sur le port `8883`
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+## Installation
 
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+Installer les dependances :
 
 ```bash
-ng test
+npm install
 ```
 
-## Running end-to-end tests
+## Lancement en developpement
 
-For end-to-end (e2e) testing, run:
+Demarrer l'application Angular :
 
 ```bash
-ng e2e
+npm start
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+Puis ouvrir :
 
-## Additional Resources
+```text
+http://localhost:4200/
+```
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+## Backend attendu
+
+Le service Angular appelle les endpoints suivants :
+
+```text
+GET    http://localhost:8883/products
+DELETE http://localhost:8883/products/{id}
+```
+
+Un produit attendu par l'interface contient au minimum :
+
+```json
+{
+  "id": 1,
+  "name": "Computer",
+  "price": 12000,
+  "selected": true
+}
+```
+
+## Scripts disponibles
+
+```bash
+npm start
+```
+
+Lance le serveur de developpement Angular.
+
+```bash
+npm run build
+```
+
+Compile l'application dans le dossier `dist/`.
+
+```bash
+npm run watch
+```
+
+Compile en mode developpement et surveille les changements.
+
+```bash
+npm test
+```
+
+Lance les tests unitaires.
+
+## Structure du projet
+
+```text
+src/
+  app/
+    home/              Page d'accueil
+    products/          Page de liste des produits
+    services/
+      product.ts       Service HTTP des produits
+    app.routes.ts      Configuration des routes Angular
+    app.config.ts      Providers Angular, router et HttpClient
+  styles.css           Styles globaux et imports Bootstrap
+```
+
+## Routes
+
+| Route | Composant | Description |
+| --- | --- | --- |
+| `/home` | `Home` | Page d'accueil |
+| `/products` | `Products` | Liste et suppression des produits |
+
+## Notes
+
+- L'application utilise des composants Angular standalone.
+- Les styles Bootstrap sont importes dans `src/styles.css`.
+- Si la page produits reste vide ou affiche une erreur, verifier que le backend
+  est bien lance sur `http://localhost:8883`.
