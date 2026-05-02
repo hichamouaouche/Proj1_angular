@@ -1,22 +1,19 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http'; // <--- AJOUTER CET IMPORT
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
-export class ProductService { // Classe renommée ici
-  products = [
-    {id : 1, name : "Computer", price : 2300, selected : true},
-    {id : 2, name : "Printer", price : 1200, selected : false},
-    {id : 3, name : "Smart Phone", price : 1100, selected : true}
-  ];
+export class ProductService {
+  constructor(private http: HttpClient) {}
 
-  constructor() {}
-
-  getAllProducts() {
-    return this.products;
+  getAllProducts(): Observable<any> {
+    return this.http.get("http://localhost:8883/products");
   }
 
-  deleteProduct(product : any): void {
-    this.products = this.products.filter((p: any) => p.id != product.id);
+  // Changer 'void' par 'Observable<any>'
+  deleteProduct(product: any): Observable<any> {
+    return this.http.delete("http://localhost:8883/products/" + product.id);
   }
 }

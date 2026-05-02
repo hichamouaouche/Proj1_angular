@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-// On utilise ../ pour remonter d'un dossier
 import { ProductService } from '../services/product';
 
 @Component({
@@ -10,9 +9,8 @@ import { ProductService } from '../services/product';
   styleUrl: './products.css',
 })
 export class Products implements OnInit {
-  products! : Array<any>;
+  products: Array<any> = [];
 
-  // On injecte bien ProductService
   constructor(private productService: ProductService) {}
 
   ngOnInit(): void {
@@ -20,14 +18,26 @@ export class Products implements OnInit {
   }
 
   getAllProducts(): void {
-    this.products = this.productService.getAllProducts();
+    this.productService.getAllProducts().subscribe({
+      next: (value: any) => { // Ajout de :any
+        this.products = value; // Correction : on utilise 'value' ici
+      },
+      error: (err: any) => {
+        console.log(err);
+      }
+    });
   }
 
   handleDelete(product: any): void {
-    let v = confirm('Êtes-vous sûr de vouloir supprimer ?');
-    if (v === true) {
-      this.productService.deleteProduct(product);
-      this.getAllProducts();
+    if (confirm('Êtes-vous sûr de vouloir supprimer ?')) {
+      this.productService.deleteProduct(product).subscribe({
+        next: (value: any) => {
+          this.getAllProducts();
+        },
+        error: (err: any) => {
+          console.log(err);
+        }
+      });
     }
   }
 }
